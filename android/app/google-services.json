@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748023398536",
+    "project_id": "sushi-box-d7a35",
+    "storage_bucket": "sushi-box-d7a35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748023398536:android:52c7db71f0421ba62bdf3d",
+        "android_client_info": {
+          "package_name": "com.example.sushi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEffL9Yh5T-r7tGxbzp4mqt3l8HcQ0n0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
