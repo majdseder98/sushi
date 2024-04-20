@@ -1,128 +1,181 @@
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sushi/components/my_button.dart';
-import 'package:sushi/models/food.dart';
-import 'package:sushi/models/restaurant.dart';
+import 'package:sushi/components/my_network_image.dart';
+import 'package:sushi/cubit/home_cubit.dart';
+import 'package:sushi/cubit/home_state.dart';
+import 'package:sushi/extensions/size_on_context.dart';
+import 'package:sushi/extensions/snack_on_context.dart';
+import 'package:sushi/models/extra_model.dart';
+import 'package:sushi/models/food_repo.dart';
 
-class FoodPage extends StatefulWidget {
-  final Food food;
-  final Map<Addon, bool> selectedAddons = {};
+class FoodPage extends StatelessWidget {
+  final FoodRepo food;
 
-  FoodPage({Key? key, required this.food}) : super(key: key) {
-    for (Addon addon in food.availableAddon) {
-      selectedAddons[addon] = false;
-    }
-  }
-
-  @override
-  _FoodPageState createState() => _FoodPageState();
-}
-
-class _FoodPageState extends State<FoodPage> {
- void addToCart(Food food, Map<Addon, bool> selectedAddons) {
-
-  Navigator.pop(context);
-  List<Addon> currentlySelectedAddons = [];
-
-  // Iterate over available addons and check if they are selected
-  for (Addon addon in food.availableAddon) {
-    if (selectedAddons[addon] == true) { // Checking if the addon is selected
-      currentlySelectedAddons.add(addon);
-    }
-  }
-
-  // Adding the selected food with addons to the cart
-  context.read<Restaurant>().addToCart(food, currentlySelectedAddons);
-}
+  const FoodPage({Key? key, required this.food}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Food image
-            Image.asset(widget.food.imagePath),
-        
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Food name
-                  Text(
-                    widget.food.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final cubit = HomeCubit.get(context);
+          final list = cubit.map[food.uid] ?? cubit.ons;
+
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: MyNetworkImage(
+                  image: food.image,
+                  height: context.height * 0.3,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Food name
+                    Text(
+                      food.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-        
-                  // Food price
-                  Text(
-                    widget.food.price.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.primary,
+
+                    // Food price
+                    Text(
+                      food.price.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                  ),
-        
-                  const SizedBox(height: 10), // Food description
-                  Text(
-                    widget.food.description,
-                  ),
-        
-                  const SizedBox(height: 10), // Add-ons
-        
-                  Divider(color: Theme.of(context).colorScheme.secondary),
-        
-                  const SizedBox(height: 10), // Add-ons
-        
-                  Text(
-                    "Add-ons",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+
+                    const SizedBox(height: 10), // Food description
+                    Text(
+                      food.dis,
                     ),
-                  ),
-        
-                  const SizedBox(height: 10), // Add-ons
-        
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).colorScheme.secondary),
-                      borderRadius: BorderRadius.circular(8),
+
+                    const SizedBox(height: 10), // Add-ons
+
+                    Divider(color: Theme.of(context).colorScheme.primary),
+
+                    GestureDetector(
+                      onTap: () {
+                        if (food.extra.isNotEmpty &&
+                            !cubit.isContain(food.uid)) {
+                          showGeneralDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            barrierLabel: "d",
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    Dialog(
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              child: SizedBox(
+                                height: context.height * 0.3,
+                                child: ListView.builder(
+                                  itemCount: food.extra.length,
+                                  physics: const BouncingScrollPhysics(),
+                                  padding: const EdgeInsets.all(16),
+                                  itemBuilder: (context, index) {
+                                    final extra = food.extra[index];
+
+                                    return OnsItem(
+                                      extra: extra,
+                                      onTap: () {
+                                        cubit.addOns(extra);
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          context.showSnack("No Ons Available");
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          cubit.isContain(food.uid) ? "Ons" : "Add-ons: ",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: ListView.builder(
+                    ListView.builder(
+                      itemBuilder: (context, index) {
+                        final extra = list[index];
+
+                        return OnsItem(extra: extra);
+                      },
+                      itemCount: list.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: widget.food.availableAddon.length,
-                      itemBuilder: (context, index) {
-                        Addon addon = widget.food.availableAddon[index];
-                        return CheckboxListTile(
-                          title: Text(addon.name),
-                          subtitle: Text(addon.price.toString()),
-                          value: widget.selectedAddons[addon],
-                          onChanged: (bool? value) {
-                            setState(() {
-                              widget.selectedAddons[addon] = value!;
-                            });
-                          },
-                        );
-                      },
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 10), // Add-ons
+                  ],
+                ),
               ),
-            ),
-        
-            MyButton(text: "Add to cart", onTap: ()=> addToCart(widget.food, widget.selectedAddons)), // Comma added here
-            const SizedBox(height: 25,),
+              SizedBox(
+                height: context.height * 0.11,
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: MyButton(
+                    text: cubit.isContain(food.uid)
+                        ? "Remove From Cart"
+                        : "Add to cart",
+                    onTap: () {
+                      cubit.addToCart(food);
+                    }),
+              ), // Comma added here
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class OnsItem extends StatelessWidget {
+  const OnsItem({
+    super.key,
+    required this.extra,
+    this.onTap,
+  });
+
+  final ExtraModel extra;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("${extra.name} :  "),
+            Text('\$${extra.price}'),
           ],
         ),
       ),

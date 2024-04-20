@@ -10,7 +10,8 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        
+        title: const Text("Settings"),
         backgroundColor: Theme.of(context).colorScheme.background,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -18,13 +19,15 @@ class SettingsPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
-            margin: const EdgeInsets.only(left: 25, top: 25, right: 25), // Corrected syntax
+            margin: const EdgeInsets.only(
+                left: 25, top: 25, right: 25), // Corrected syntax
             padding: const EdgeInsets.all(25), // Corrected syntax
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Corrected syntax
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween, // Corrected syntax
               children: [
                 Text(
                   "Dark Mode",
@@ -34,8 +37,11 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 CupertinoSwitch(
-                  value: Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
-                  onChanged: (value) => Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
+                  value: Provider.of<ThemeProvider>(context, listen: false)
+                      .isDarkMode,
+                  onChanged: (value) =>
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .toggleTheme(),
                 ),
               ],
             ),
@@ -45,4 +51,3 @@ class SettingsPage extends StatelessWidget {
     );
   }
 }
-     

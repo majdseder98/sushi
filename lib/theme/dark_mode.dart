@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
 
-final ThemeData darkMode = ThemeData(
-  // Define your dark theme properties here
-  colorScheme: ColorScheme.dark(
-    background: const Color.fromARGB(255, 20, 20, 20),
-    primary: const Color.fromARGB(255, 122, 122, 122),
-    secondary: const Color.fromARGB(255, 30, 30, 30),
-    tertiary: const Color.fromARGB(255, 50, 50, 50),
-    onPrimary: Colors.grey.shade300,
+ThemeData darkMode = ThemeData(
+  colorScheme:  ColorScheme.dark(
+    background: Colors.black,
+    primary: Colors.white,
+    secondary: Colors.grey.shade800,
+    tertiary: Colors.black,
   ),
-  // Add other theme properties if needed
+  useMaterial3: true,
+  primaryColor: Colors.white,
+  scaffoldBackgroundColor: Colors.black,
+  brightness: Brightness.dark,
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(backgroundColor: Colors.black),
+  dialogTheme: DialogTheme(
+    backgroundColor: Colors.black.withOpacity(0.6),
+  ),
+  cardTheme: const CardTheme(
+    color: Colors.black,
+    margin: EdgeInsets.all(0),
+  ),
+  cardColor: Colors.black,
+  dialogBackgroundColor: Colors.black.withOpacity(0.6),
+  dividerColor: Colors.white,
+  disabledColor: Colors.black,
+  sliderTheme: SliderThemeData(
+    thumbShape: SliderComponentShape.noThumb,
+    minThumbSeparation: 0,
+  ),
+  appBarTheme: const AppBarTheme(iconTheme: const IconThemeData(color: Colors.white),),
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(fontSize: 45, color: Colors.white, fontWeight: FontWeight.w600),
+    displayMedium: TextStyle(fontSize: 42, color: Colors.white, fontWeight: FontWeight.w600),
+    labelSmall: TextStyle(color: Colors.white, fontSize: 11),
+    bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
+    bodySmall: TextStyle(color: Colors.white, fontSize: 12),
+    bodyLarge: TextStyle(fontSize: 30, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(color: Colors.white),
 );
