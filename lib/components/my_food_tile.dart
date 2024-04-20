@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
-import '../models/food.dart';
+import 'package:sushi/components/my_network_image.dart';
+import 'package:sushi/extensions/size_on_context.dart';
+import 'package:sushi/models/extra_model.dart';
+import 'package:sushi/models/food_repo.dart';
+import 'package:sushi/pages/food_page.dart';
 
 class FoodTile extends StatelessWidget {
-  final Food food;
-  final void Function()? onTap;
+  final FoodRepo food;
+  final List<ExtraModel> ons;
 
   const FoodTile({
     Key? key,
     required this.food,
-    required this.onTap,
+    required this.ons,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FoodPage(
+            food: food,
+          ),
+        ));
+      },
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,38 +36,59 @@ class FoodTile extends StatelessWidget {
                 children: [
                   Text(
                     food.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14, // Adjust font size as needed
                     ),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
-                    food.description,
-                    style: TextStyle(
-                      fontSize: 8, // Make the description text smaller
+                    food.dis,
+                    style: const TextStyle(
+                      fontSize: 12, // Make the description text smaller
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     '\$${food.price}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  if (ons.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        "Ons",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  if (ons.isNotEmpty)
+                    ListView.builder(
+                      itemBuilder: (context, index) {
+                        final extra = ons[index];
+
+                        return OnsItem(extra: extra);
+                      },
+                      itemCount: ons.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
                 ],
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             ClipRRect(
-              borderRadius: BorderRadius.circular(10), // Adjust border radius as needed
-              child: SizedBox(
-                width: 80,
-                height: 75,
-                child: Image.asset(
-                  food.imagePath,
-                  fit: BoxFit.cover,
-                ),
+              borderRadius: BorderRadius.circular(12),
+              child: MyNetworkImage(
+                image: food.image,
+                height: context.height * 0.1,
+                width: context.width * 0.25,
+                fit: BoxFit.cover,
               ),
             ),
           ],
