@@ -20,6 +20,11 @@ class HomeCubit extends Cubit<HomeState> {
     "poki",
     "asianBoa",
     "cup",
+    "classicSushiRoll",
+    "wok",
+    "poki",
+    "asianBoa",
+    "cup",
   ];
   int index = 0;
   void selectCategory(int id) {

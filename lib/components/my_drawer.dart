@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sushi/components/my_drawer_tile.dart';
+import 'package:sushi/pages/login_page.dart';
 import 'package:sushi/pages/settings_page.dart';
 import 'package:sushi/services/auth/auth_services.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
-  void logout(BuildContext context) {
+  void logout(BuildContext context) async {
     final authService = AuthService();
-    authService.signOut();
-    Navigator.pop(context); // Close the drawer after logout
+    await authService.signOut().whenComplete(() {
+      Navigator.pop(context);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+          (route) => false);
+    });
   }
 
   @override
