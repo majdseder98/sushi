@@ -49,12 +49,13 @@ class FoodTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    '\$${food.price}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                 Text(
+  '₪${food.price}',
+  style: const TextStyle(
+    fontWeight: FontWeight.bold,
+  ),
+),
+
                   if (ons.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),

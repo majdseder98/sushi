@@ -15,16 +15,17 @@ class HomeCubit extends Cubit<HomeState> {
   static HomeCubit get(context) => BlocProvider.of(context);
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final List<String> cats = [
-    "classicSushiRoll",
+    "classicSushiRolls",
+    "chif Rolls",
+    "sushi Rolls",
+    "Appetizers",
+    "salads",
+    "kids meal",
     "wok",
-    "poki",
+    "poki bowls",
     "asianBoa",
     "cup",
-    "classicSushiRoll",
-    "wok",
-    "poki",
-    "asianBoa",
-    "cup",
+    "Drinks",
   ];
   int index = 0;
   void selectCategory(int id) {

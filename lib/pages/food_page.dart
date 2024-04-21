@@ -50,14 +50,15 @@ class FoodPage extends StatelessWidget {
                     ),
 
                     // Food price
-                    Text(
-                      food.price.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
+Text(
+  '₪${food.price}',
+  style: TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    color: Theme.of(context).colorScheme.primary,
+  ),
+),
+
 
                     const SizedBox(height: 10), // Food description
                     Text(
@@ -174,8 +175,10 @@ class OnsItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("${extra.name} :  "),
-            Text('\$${extra.price}'),
+            Text("${extra.name} : "),
+            Text('₪${extra.price}')
+
+
           ],
         ),
       ),

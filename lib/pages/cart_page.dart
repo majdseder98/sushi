@@ -91,7 +91,9 @@ class CheckOutButton extends StatelessWidget {
                     ?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              Text("\$ ${cubit.totalPrice}",
+              Text("₪ ${cubit.totalPrice}",
+
+
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
