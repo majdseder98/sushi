@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                   height: 16,
                 ),
                 SizedBox(
-                  height: context.height * 0.07,
+                  height: context.height * 0.09,
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       final item = cubit.cats[index];
@@ -106,9 +106,8 @@ class HomePage extends StatelessWidget {
                       );
                     },
                     itemCount: cubit.cats.length,
-                    shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                   ),
                 ),
                 ListView.builder(
@@ -117,7 +116,10 @@ class HomePage extends StatelessWidget {
                   itemCount: list.length,
                   itemBuilder: (context, index) {
                     final food = list[index];
-                    return FoodTile(food: food,ons: [],);
+                    return FoodTile(
+                      food: food,
+                      ons: const [],
+                    );
                   },
                 )
               ],
